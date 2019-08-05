@@ -1,0 +1,44 @@
+<ion-content>
+  <div class="container">
+
+    <div class="left">
+      <img src="../../assets/suite.jpg">
+    </div>
+
+    <div class="right" style="flex-grow: 3" *ngIf="showComp">
+      <div class="logo">
+        <img src="../../assets/UzuriLogo.PNG">
+      </div>
+      <div class="inputs">
+        <input type="email" placeholder="Enter Email" [(ngModel)]="email">
+
+        <input type="password" placeholder="Enter Password" [(ngModel)]="password">
+      </div>
+
+      <div class="navigation">
+        <input type="button" value="Login" (click)=" logout()">
+        <label>Forgot Password?</label>
+        <br>
+        <label>Not a registered admin? <span (click)="showRegister()">Register</span></label>
+      </div>
+    </div>
+
+    <div class="right" style="flex-grow: 3" *ngIf="!showComp">
+      <div class="logo">
+        <img src="../../assets/UzuriLogo.PNG">
+      </div>
+      <div class="inputs">
+        <input type="email" placeholder="Enter Email" [(ngModel)]="email">
+
+        <input type="password" placeholder="Enter Password" [(ngModel)]="password">
+      </div>
+
+      <div class="navigation">
+        <input type="button" value="Register" (click)=" register()">
+        <label>Already Registered? <span (click)="showRegister()">Login</span></label>
+      </div>
+    </div>
+
+
+  </div>
+</ion-content>

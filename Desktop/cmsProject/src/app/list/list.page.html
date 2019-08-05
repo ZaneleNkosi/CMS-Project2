@@ -1,0 +1,104 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>list</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div class="container">
+    <div class="list">
+      <div class="card" *ngFor="let n of rooms" (click)="getroom(n)" style="flex-grow: 1">
+        <div class="rooms">
+          <img src="{{n.Image}}">
+        </div><br>
+        <div class="desc">
+          <p>{{n.Description}}</p>
+        </div>
+      </div>
+      <!-- <ion-fab end middle>
+          <ion-buttons>
+              <button ion-button color="dark" class="plus">  <ion-icon name="create"></ion-icon></button>
+        </ion-buttons>
+        </ion-fab> -->
+
+    </div>
+
+    <div class="right" style="flex-grow: 3">
+      <div class="top">
+        <div class="nav">
+          <p>Profile Name</p>
+        </div>
+        <div class="propic">
+          <img src="../../assets/UzuriLogo.PNG">
+        </div>
+      </div>
+      <div class="bottom">
+
+        <div class="display">
+          <p>{{room.Description}}</p>
+          <p class="feat">FEATURES</p>
+          <p>{{room.features}}</p>
+          <p>{{room.Mini}}</p>
+          <p>{{room.Tea}}</p>
+          <p>{{room.Break}}</p>
+          <p>{{room.Satellite}}</p>
+          <p>{{room.Wifi}}</p>
+          <p>{{room.roomService}}</p>
+          <br>
+          <p>Beds: {{room.Bed}}</p>
+          <p>Baths: {{room.Bathroom}}</p>
+        </div>
+        <img src="{{room.Image}}">
+      </div>
+
+    </div>
+  </div>
+  <div class="userform">
+    <img src="../../assets/181518.png">
+    <div class="controls">
+      <ion-input type="text" placeholder="Name" [(ngModel)]="suite.Name" class="p"></ion-input>
+      <select [(ngModel)]="suite.Type">
+        <option disabled selected> - Pick Room Type -</option>
+        <option>Double Room</option>
+        <option>Single Room</option>
+        <option>Family Room</option>
+      </select>
+      <ion-input type="text" placeholder="Price" [(ngModel)]="suite.Price" class="p"></ion-input>
+      <select [(ngModel)]="suite.Bed">
+        <option disabled selected> - No. of bedrooms -</option>
+        <option>1 Bed</option>
+        <option>2 Beds</option>
+        <option>3 Beds</option>
+      </select>
+      <select [(ngModel)]="suite.Bathroom">
+        <option disabled selected> - No. of bathrooms -</option>
+        <option>1 Bathroom</option>
+        <option>2 Bathrooms</option>
+        <option>3 Bathrooms</option>
+      </select>
+      <textarea placeholder="Description" [(ngModel)]="suite.Description"></textarea>
+      <div class="feat">
+      <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Mini"></ion-input>
+      <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Tea"></ion-input>
+    </div>
+    <div class="feat">
+      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Break"></ion-input>
+      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Wifi"></ion-input>
+    </div>
+
+    <div class="feat">
+      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.roomService"></ion-input>
+      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Satellite"></ion-input>
+    </div>
+      <ion-item>
+        <ion-label></ion-label>
+        <ion-input type="file" accept="image/*" (change)="changeListener($event)"></ion-input>
+      </ion-item>
+
+
+      <button (click)="changeListener(pic)">Send</button>
+    </div>
+  </div>
+
+</ion-content>
+<!-- style="flex-grow: 3" -->
