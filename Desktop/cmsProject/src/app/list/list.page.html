@@ -6,99 +6,162 @@
 
 <ion-content>
   <div class="container">
-    <div class="list">
-      <div class="card" *ngFor="let n of rooms" (click)="getroom(n)" style="flex-grow: 1">
-        <div class="rooms">
-          <img src="{{n.Image}}">
-        </div><br>
-        <div class="desc">
-          <p>{{n.Description}}</p>
-        </div>
-      </div>
-      <!-- <ion-fab end middle>
-          <ion-buttons>
-              <button ion-button color="dark" class="plus">  <ion-icon name="create"></ion-icon></button>
-        </ion-buttons>
-        </ion-fab> -->
 
-    </div>
+    <div class="info">
+      <div class="list">
+        <div class="card" *ngFor="let n of rooms" (click)="getroom(n)" style="flex-grow: 1">
+          <div class="rooms">
+            <img src="{{n.Image}}">
+          </div>
 
-    <div class="right" style="flex-grow: 3">
-      <div class="top">
-        <div class="nav">
-          <p>Profile Name</p>
-        </div>
-        <div class="propic">
-          <img src="../../assets/UzuriLogo.PNG">
-        </div>
-      </div>
-      <div class="bottom">
+          <div class="deletes">
+            <div class="desc">
+              <p>{{n.Description}}</p>
+            </div>
+            <div class="btns">
+              <div class="del">
+                <ion-buttons end (click)="deleteRoom(n)">
+                  <button ion-button color="danger" id="delete">
+                    Delete
+                  </button>
+                </ion-buttons>
+              </div>
 
-        <div class="display">
-          <p>{{room.Description}}</p>
-          <p class="feat">FEATURES</p>
-          <p>{{room.features}}</p>
-          <p>{{room.Mini}}</p>
-          <p>{{room.Tea}}</p>
-          <p>{{room.Break}}</p>
-          <p>{{room.Satellite}}</p>
-          <p>{{room.Wifi}}</p>
-          <p>{{room.roomService}}</p>
-          <br>
-          <p>Beds: {{room.Bed}}</p>
-          <p>Baths: {{room.Bathroom}}</p>
+              <!--  
+                <ion-buttons end>
+                  <button ion-button color="danger" id="edit">
+                    Edit
+                  </button>
+                </ion-buttons>
+              </div> -->
+            </div>
+
+          </div>
         </div>
-        <img src="{{room.Image}}">
+
       </div>
 
-    </div>
-  </div>
-  <div class="userform">
-    <img src="../../assets/181518.png">
-    <div class="controls">
-      <ion-input type="text" placeholder="Name" [(ngModel)]="suite.Name" class="p"></ion-input>
-      <select [(ngModel)]="suite.Type">
-        <option disabled selected> - Pick Room Type -</option>
-        <option>Double Room</option>
-        <option>Single Room</option>
-        <option>Family Room</option>
-      </select>
-      <ion-input type="text" placeholder="Price" [(ngModel)]="suite.Price" class="p"></ion-input>
-      <select [(ngModel)]="suite.Bed">
-        <option disabled selected> - No. of bedrooms -</option>
-        <option>1 Bed</option>
-        <option>2 Beds</option>
-        <option>3 Beds</option>
-      </select>
-      <select [(ngModel)]="suite.Bathroom">
-        <option disabled selected> - No. of bathrooms -</option>
-        <option>1 Bathroom</option>
-        <option>2 Bathrooms</option>
-        <option>3 Bathrooms</option>
-      </select>
-      <textarea placeholder="Description" [(ngModel)]="suite.Description"></textarea>
-      <div class="feat">
-      <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Mini"></ion-input>
-      <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Tea"></ion-input>
-    </div>
-    <div class="feat">
-      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Break"></ion-input>
-      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Wifi"></ion-input>
-    </div>
+      <div class="right" style="flex-grow: 3">
+        <div class="top">
+          <div class="nav">
+            <p>WELCOME {{displayProfile.firstname}}</p>
+          </div>
+          <div class="propic" (click)=" logout()">
+            <img src="{{displayProfile.image}}">
+          </div>
+        </div>
+        <div class="bottom">
 
-    <div class="feat">
-      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.roomService"></ion-input>
-      <ion-input type="text"  placeholder="Features" [(ngModel)]="suite.Satellite"></ion-input>
-    </div>
-      <ion-item>
-        <ion-label></ion-label>
-        <ion-input type="file" accept="image/*" (change)="changeListener($event)"></ion-input>
-      </ion-item>
+          <div class="leftB">
+            <div class="suites">
+              <div class="roooms">
+                <img src="{{room.Image}}">
+              </div>
+
+              <div class="display">
+                <h2>{{room.Name}}</h2>
+                <p>{{room.Description}}</p>
+                <p>R{{room.Price}}</p>
+                <p class="feat">FEATURES</p>
+                <p>{{room.features}}</p>
+                <p>{{room.Mini}}</p>
+                <p>{{room.Tea}}</p>
+                <p>{{room.Break}}</p>
+                <p>{{room.Satellite}}</p>
+                <p>{{room.Wifi}}</p>
+                <p>{{room.roomService}}</p>
+                <br>
+                <p>Beds: {{room.Bed}}</p>
+                <p>Baths: {{room.Bathroom}}</p>
+
+              </div>
 
 
-      <button (click)="changeListener(pic)">Send</button>
+            </div>
+
+          </div>
+          <div class="rightB">
+
+            <div class="bookings">
+              <div class="disp" *ngFor="let n of displayBooking">
+                <div class="name">
+                  {{n.roomName}}
+                </div>
+                <div class="bookee">
+                  <div class="Bname">
+                    {{n.name}}
+                  </div>
+                  <div class="no">
+                    {{n.phone}}
+                  </div>
+                </div>
+
+                <div class="dates">
+                  <div class="checkin">
+                    Check-In: <br>{{n.date1}}
+                  </div>
+                  <div class="checkout">
+                    Check-Out:<br> {{n.date2}}
+                  </div>
+                </div>
+                <div class="days">
+                  No. of days at the hotel : {{n.nodays}}
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="userform">
+      <img src="../../assets/181518.png">
+      <div class="controls">
+        <ion-input type="text" placeholder="Name" [(ngModel)]="suite.Name" class="p"></ion-input>
+        <ion-select [(ngModel)]="suite.Type" class="slct">
+          <ion-select-option disabled selected> - Pick Room Type -</ion-select-option>
+          <ion-select-option>Double Room</ion-select-option>
+          <ion-select-option>Single Room</ion-select-option>
+          <ion-select-option>Family Room</ion-select-option>
+        </ion-select>
+        <ion-input type="text" placeholder="Price" [(ngModel)]="suite.Price" class="p"></ion-input>
+        <ion-select [(ngModel)]="suite.Bed" class="slct">
+          <ion-select-option disabled selected> - No. of bedrooms -</ion-select-option>
+          <ion-select-option>1 Bed</ion-select-option>
+          <ion-select-option>2 Beds</ion-select-option>
+          <ion-select-option>3 Beds</ion-select-option>
+        </ion-select>
+        <ion-select [(ngModel)]="suite.Bathroom" class="slct">
+          <ion-select-option disabled selected> - No. of bathrooms -</ion-select-option>
+          <ion-select-option>1 Bathroom</ion-select-option>
+          <ion-select-option>2 Bathrooms</ion-select-option>
+          <ion-select-option>3 Bathrooms</ion-select-option>
+        </ion-select>
+        <ion-textarea placeholder="Description" [(ngModel)]="suite.Description" class="p"></ion-textarea>
+        <div class="feat1">
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Mini"></ion-input>
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Tea"></ion-input>
+        </div>
+        <div class="feat1">
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Break"></ion-input>
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Wifi"></ion-input>
+        </div>
+
+        <div class="feat1">
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.roomService"></ion-input>
+          <ion-input type="text" placeholder="Features" [(ngModel)]="suite.Satellite"></ion-input>
+        </div>
+        <ion-item>
+          <ion-label></ion-label>
+          <ion-input type="file" accept="image/*" (change)="changeListener($event)"></ion-input>
+        </ion-item>
+
+
+        <button (click)="changeListener(pic)">Send</button>
+      </div>
     </div>
   </div>
 
 </ion-content>
-<!-- style="flex-grow: 3" -->

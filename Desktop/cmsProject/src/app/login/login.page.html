@@ -9,15 +9,19 @@
       <div class="logo">
         <img src="../../assets/UzuriLogo.PNG">
       </div>
+
+      <p id="err">{{error}}</p>
+
       <div class="inputs">
         <input type="email" placeholder="Enter Email" [(ngModel)]="email">
+        
 
         <input type="password" placeholder="Enter Password" [(ngModel)]="password">
       </div>
 
       <div class="navigation">
-        <input type="button" value="Login" (click)=" logout()">
-        <label>Forgot Password?</label>
+        <input type="button" value="Login" (click)=" login()">
+        <!-- <label>Forgot Password?</label> -->
         <br>
         <label>Not a registered admin? <span (click)="showRegister()">Register</span></label>
       </div>

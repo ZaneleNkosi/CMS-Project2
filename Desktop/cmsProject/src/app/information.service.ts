@@ -14,7 +14,7 @@ getUser(val) {
   console.log('User data in provider: ', this.user);
 
 }
-returnUser() {
+returnUser(){
   return this.user;
 }
 }

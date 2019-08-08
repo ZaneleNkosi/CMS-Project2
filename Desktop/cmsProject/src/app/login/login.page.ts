@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { Routes, Router } from '@angular/router';
 import { Users } from '../Users';
+import { InformationService } from '../information.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -15,33 +16,63 @@ export class LoginPage implements OnInit {
   email;
   password;
   username;
- 
-  constructor(private router: Router) { }
+  error = "";
+  constructor(private router: Router, private infoProv: InformationService) { }
 
   ngOnInit() {
-    
+    this.catchUser()
   }
 
-  logout() {
-    firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+  catchUser() {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        this.router.navigateByUrl('/');
+        unsubscribe();
+      } else {
+        this.infoProv.getUser(user);
+        this.router.navigateByUrl('list');
+        unsubscribe();
+      }
+    })
+  }
+
+  login() {
+    if (!this.email || !this.password){
+      this.error = "All fields required"
+    }else{
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(res => {
+        this.infoProv.getUser(res);
         console.log(res);
         this.router.navigateByUrl('list');
 
+      }).catch((err) => {
+        this.error = err.message
       })
+    }
   }
 
- register() {
-    firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+  register() {
+
+    if (!this.email || !this.password){
+      this.error = "All fields required"
+    }else{
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then(res => {
+        this.infoProv.getUser(res);
         console.log(res);
         this.router.navigateByUrl('list');
-      })
-  }
 
-  
+      }).catch((err) => {
+        this.error = err.message
+      })
+    } 
+  }
 
   showRegister() {
     this.showComp = !this.showComp
   }
+
+
+
 }

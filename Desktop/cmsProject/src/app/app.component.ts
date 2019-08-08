@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { InformationService } from './information.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
     private router: Router,
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private infoProv: InformationService
   ) {
     firebase.initializeApp(FIREBASE_INFO);
     this.catchUser()
@@ -39,6 +41,7 @@ export class AppComponent {
       this.router.navigateByUrl('/');
       unsubscribe();
     }else {
+      this.infoProv.getUser(user);
       this.router.navigateByUrl('list');
       unsubscribe();
 

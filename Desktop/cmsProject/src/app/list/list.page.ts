@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { InformationService } from '../information.service';
 
 @Component({
@@ -21,11 +21,12 @@ export class ListPage implements OnInit {
     Type: '',
     Description: '',
     Name: '',
-    Mini:'',
-    Break:'',
-    Satellite:'',
+    docname: '',
+    Mini: '',
+    Break: '',
+    Satellite: '',
     Wifi: '',
-    roomService:'',
+    roomService: '',
     Tea: '',
     Bed: '',
     Bathroom: '',
@@ -33,16 +34,29 @@ export class ListPage implements OnInit {
   }
 
   profileImage: string;
-  constructor(private router: Router, public loadingCtrl: LoadingController, private InfoProvider: InformationService) {
+  displayBooking = [];
+  uid;
+  constructor(public alertCtrl: AlertController, private router: Router, public loadingCtrl: LoadingController, private infoProvider: InformationService) {
     console.log(this.rooms);
+
   }
 
   ngOnInit() {
 
-    this.getRooms()
+    this.uid = firebase.auth().onAuthStateChanged(res => {
+      this.uid = res.uid;
+      this.getRooms()
+      this.retrieveBooking()
+      this.retrieveData()
+    })
 
+    // this.retrieveProfile()
+
+    // this.deleteRoom()
     console.log(this.rooms);
+    console.log('User: ', this.infoProvider.returnUser());
   }
+
 
   logout() {
     firebase.auth().signOut().then(() => {
@@ -68,42 +82,9 @@ export class ListPage implements OnInit {
   getroom(val) {
     this.room = val
     console.log(this.room);
-
   }
 
-  // async getProfile() {
-  //   let users = this.db.collection('User Profiles');
-
-  //   let load = await this.loadingCtrl.create({
-  //     message: 'Loading'
-  //   });
-  //   load.present();
-  //   // ...query the profile that contains the uid of the currently logged in user...
-  //   console.log('Profile User: ', this.InfoProvider.returnUser());
-  //   let query = users.where("uid", "==", this.InfoProvider.returnUser().uid);
-  //   query.get().then(querySnapshot => {
-  //     // ...log the results if the document exists...
-  //     if (querySnapshot.empty !== true) {
-  //       console.log('Got data', querySnapshot);
-  //       querySnapshot.forEach(doc => {
-  //         this.displayProfile = doc.data();
-
-  //         console.log('Profile Document: ', this.displayProfile)
-  //       })
-  //     } else {
-  //       console.log('No data');
-  //     }
-  //     // dismiss the loading
-  //     load.dismiss();
-  //   }).catch(err => {
-  //     // catch any errors that occur with the query.
-  //     console.log("Query Results: ", err);
-  //     // dismiss the loading
-  //     load.dismiss();
-  //   })
-
-  // }
-
+  //adding a pic and saving new room to database
   async changeListener(pic) {
     console.log('Image data: ', pic);
     const add = pic.target.files[0]
@@ -135,4 +116,97 @@ export class ListPage implements OnInit {
 
 
   }
+
+  //Deleting a room
+  async deleteRoom(room) {
+
+    const confirm = await this.alertCtrl.create({
+
+      message: 'Are you sure you want to delete this suite?',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.db.collection('hotel').doc('aDJnBKRlpH482p3HwMlM').collection('rooms').doc(room.Name).delete().then(() => {
+
+              console.log("Document successfully deleted!");
+            }).catch(function (error) {
+              console.error("Error removing document: ", error);
+            });
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+
+  }
+
+  //Retrieving a profile
+  async retrieveData() {
+
+    let users = this.db.collection('User Profiles');
+
+    let load = await this.loadingCtrl.create({
+
+    });
+    load.present();
+    // ...query the profile that contains the uid of the currently logged in user...
+    console.log('Profile User: ', this.infoProvider.returnUser());
+    let query = users.where("uid", "==", this.infoProvider.returnUser().uid);
+    query.get().then(querySnapshot => {
+      // ...log the results if the document exists...
+      if (querySnapshot.empty !== true) {
+        console.log('Got data', querySnapshot);
+        querySnapshot.forEach(doc => {
+          this.displayProfile = doc.data();
+
+          console.log('Profile Document: ', this.displayProfile)
+        })
+      } else {
+        console.log('No data');
+      }
+      // dismiss the loading
+      load.dismiss();
+    }).catch(err => {
+      // catch any errors that occur with the query.
+      console.log("Query Results: ", err);
+      // dismiss the loading
+      load.dismiss();
+    })
+  }
+
+
+  async retrieveBooking() {
+    let users = this.db.collection('bookings');
+    let load = await this.loadingCtrl.create({
+    });
+    load.present();
+    // ...query the Booking that contains the uid of the currently logged in user...
+    console.log('User Bookings: ', this.infoProvider.returnUser());
+    let query = users.get().then(querySnapshot => {
+      // ...log the results if the document exists...
+      if (querySnapshot.empty !== true) {
+        console.log('Got data', querySnapshot);
+        querySnapshot.forEach(doc => {
+          this.displayBooking.push(doc.data());
+          console.log('Booking Document: ', this.displayBooking)
+          // console.log('bookings', doc.data());  
+        });
+
+      } else {
+
+        console.log('No Booking data');
+      }
+      // dismiss the loading
+      load.dismiss();
+    }).catch(err => {
+      // catch any errors that occur with the query.
+      console.log("Query Results: ", err);
+      // dismiss the loading
+      load.dismiss();
+    });
+  }
+
+
 }
